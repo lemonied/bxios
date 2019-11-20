@@ -1,0 +1,33 @@
+{
+  "name": "bxios",
+  "version": "1.0.0",
+  "description": "A XMLHttpRequest Library Written By TypeScript",
+  "main": "dist/bxios.umd.js",
+  "typings": "lib/index.d.ts",
+  "repository": "https://github.com/timoodada/bxios.git",
+  "author": "chenjiyuan <jiyuan.chen@easystack.cn>",
+  "license": "MIT",
+  "scripts": {
+    "dev": "node build/development.js",
+    "tsc": "tsc"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "@babel/core": "^7.7.2",
+    "@babel/plugin-proposal-class-properties": "^7.7.0",
+    "@babel/preset-env": "^7.7.1",
+    "@babel/preset-typescript": "^7.7.2",
+    "@babel/register": "^7.7.0",
+    "@types/node": "^12.12.8",
+    "@typescript-eslint/eslint-plugin": "^2.7.0",
+    "@typescript-eslint/parser": "^2.7.0",
+    "babel-loader": "^8.0.6",
+    "eslint": "^6.6.0",
+    "eslint-loader": "^3.0.2",
+    "express": "^4.17.1",
+    "glob": "^7.1.6",
+    "typescript": "^3.7.2",
+    "webpack": "^4.41.2",
+    "webpack-merge": "^4.2.2"
+  }
+}
