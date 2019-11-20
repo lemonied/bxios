@@ -1,4 +1,4 @@
-import {isPlainObject} from './util'
+import {isPlainObject, deepMerge} from './util'
 import {Headers} from '../types'
 
 function normalizeHeaderName(headers: Headers, normalizedName: string): void {
@@ -12,7 +12,6 @@ function normalizeHeaderName(headers: Headers, normalizedName: string): void {
 }
 
 export function processHeaders(headers: Headers, data: any): Headers {
-  headers || (headers = {})
   normalizeHeaderName(headers, 'Content-Type')
 
   if (isPlainObject(data)) {
@@ -20,6 +19,15 @@ export function processHeaders(headers: Headers, data: any): Headers {
       headers['Content-Type'] = 'application/json;charset=utf-8'
     }
   }
+  return headers
+}
+
+export function transformHeaders(headers: Headers): Headers {
+  headers = deepMerge(headers.common, headers)
+  const deleteOptions = ['common']
+  deleteOptions.forEach(item => {
+    delete headers[item]
+  })
   return headers
 }
 

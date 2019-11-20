@@ -9,19 +9,20 @@
 <body>
   <script src="/dist/bxios.umd.js"></script>
   <script>
-    var a = axios({
+    axios({
       method: 'post',
-      url: '/asdasdad?qqq=222#hash',
-      params: {arr: [1, {b: 1, c: [2, 3]}]},
+      url: '/service/business/corp/corps/queryCorpList.xf',
       data: {
-        aaa: 222,
-        bbb: new Date()
+        plateform: 1,
+        currentPage: 1,
+        rowsNum: 9
       },
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
       }
+    }).then(function(res) {
+      console.log(res)
     })
-    console.log(a)
   </script>
 </body>
 </html>

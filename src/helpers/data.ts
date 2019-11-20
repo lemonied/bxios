@@ -13,3 +13,14 @@ export function transfromRequest(data: any, headers: Headers): any {
   }
   return data
 }
+
+export function transformResponse(data: any): any {
+  if (typeof data === 'string') {
+    try {
+      data = JSON.parse(data)
+    } catch (err) {
+      // do something
+    }
+  }
+  return data
+}

@@ -25,7 +25,8 @@ export class Bxios {
     } else {
       config = url
     }
-    config = mergeConfig(config, this.defaults)
+    // defaults will merge with config
+    config = mergeConfig(this.defaults, config)
     const chain: PromiseChain<any>[] = [{
       resolved: dispatchRequest
     }]

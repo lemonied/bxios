@@ -4,11 +4,22 @@ const {resolve} = require('path')
 const conf = require('./webpack.base.conf')
 const merge = require('webpack-merge')
 const devConf = require('./webpack.dev.conf')
+const proxy = require('express-http-proxy')
 
 const app = express()
 
 app.use('/', express.static(resolve(__dirname, '../examples')))
 app.use('/dist', express.static(resolve(__dirname, '../dist')))
+app.use('/service', proxy('https://zghnrc.gov.cn', {
+  proxyReqOptDecorator(proxyReq) {
+    proxyReq.headers.referer = 'https://zghnrc.gov.cn'
+    proxyReq.headers.origin = 'https://zghnrc.gov.cn'
+    return proxyReq
+  },
+  proxyReqPathResolver(req) {
+    return Promise.resolve('/service' + req.url)
+  }
+}))
 
 const PORT = 7777
 app.listen(PORT, () => {

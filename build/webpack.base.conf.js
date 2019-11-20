@@ -2,7 +2,7 @@ const {resolve} = require('path')
 
 module.exports = {
   entry: {
-    'bxios-umd': resolve(__dirname, '../src/index.ts'),
+    'bxios.umd': resolve(__dirname, '../src/index.ts'),
   },
   resolve: {
     extensions: ['.js', '.ts', '.json'],

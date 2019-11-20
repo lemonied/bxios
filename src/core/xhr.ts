@@ -1,5 +1,6 @@
 import {RequestConfig, BxiosPromise, Response} from '../types'
 import {isNull} from '../helpers/util'
+import {headersParser} from '../helpers/headers'
 
 export function xhr(config: RequestConfig): BxiosPromise {
   return new Promise((resolve, reject) => {
@@ -8,8 +9,8 @@ export function xhr(config: RequestConfig): BxiosPromise {
     const request = new XMLHttpRequest()
     if (responseType) request.responseType = responseType
     request.onreadystatechange = function(): void {
-      if (this.readyState === 4 && this.status >= 200 && this.status < 300 || this.status === 304) {
-        resolve(onLoadingSuccess(this, config))
+      if (this.readyState === 4) {
+        handleResponse()
       }
     }
     request.onerror = reject
@@ -27,20 +28,21 @@ export function xhr(config: RequestConfig): BxiosPromise {
       }
     })
     request.send(data)
-  })
-}
 
-function onLoadingSuccess(request: XMLHttpRequest, config: RequestConfig): Response<any> {
-  const responseHeaders = request.getAllResponseHeaders()
-  const responseData = request.responseType !== 'text' ?
-    request.response :
-    request.responseText
-  return {
-    data: responseData,
-    status: request.status,
-    statusText: request.statusText,
-    headers: responseHeaders,
-    config,
-    request
-  }
+    function handleResponse(): void {
+      const responseHeaders = request.getAllResponseHeaders()
+      const responseData = request.responseType !== 'text' ?
+        request.response :
+        request.responseText
+      const response: Response = {
+        data: responseData,
+        status: request.status,
+        statusText: request.statusText,
+        headers: headersParser(responseHeaders),
+        config,
+        request
+      }
+      resolve(response)
+    }
+  })
 }

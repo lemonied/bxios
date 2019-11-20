@@ -2,6 +2,7 @@ import {RequestConfig, BxiosPromise, Response} from '../types'
 import {xhr} from './xhr'
 import {transform} from './transform'
 import {compineUrl, buildUrl} from '../helpers/url'
+import {transformHeaders} from '../helpers/headers'
 
 export function dispatchRequest(config: RequestConfig): BxiosPromise {
   processConfig(config)
@@ -9,8 +10,10 @@ export function dispatchRequest(config: RequestConfig): BxiosPromise {
 }
 
 function processConfig(config: RequestConfig): void {
+  // format requestConfig before request
   config.url = transformUrl(config)
   config.data = transform(config.data, config.headers, config.transformRequest)
+  config.headers = transformHeaders(config.headers)
 }
 
 function transformUrl(config: RequestConfig): string {

@@ -20,12 +20,12 @@ type ResponseType = '' | 'arraybuffer' | 'blob' | 'document' | 'json' | 'text'
 
 export interface Headers {
   'Content-Type'?: string;
-  [prop: string]: string;
+  [prop: string]: any;
 }
 
 export interface RequestConfig {
   baseURL?: string;
-  url: string;
+  url?: string;
   method?: Method;
   data?: any;
   params?: any;
@@ -83,12 +83,22 @@ export interface Interceptors {
   response: InterceptorManager<Response>;
 }
 
-export interface BxiosClassStatic {
-  new (config: RequestConfig): Bxios;
-}
-
 export interface Bxios {
   defaults: RequestConfig;
   interceptors: Interceptors;
   request(url: any, config: any): BxiosPromise;
+}
+
+export interface BxiosInstance extends Bxios {
+  <T=any>(config: RequestConfig): BxiosPromise<T>;
+  <T=any>(url: string, config?: RequestConfig): BxiosPromise<T>;
+}
+
+export interface BxiosClassStatic {
+  new (config: RequestConfig): Bxios;
+}
+
+export interface BxiosStatic extends BxiosInstance {
+  create(config?: RequestConfig): BxiosInstance;
+  Bxios: BxiosClassStatic;
 }
