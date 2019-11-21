@@ -4,22 +4,32 @@ import {headersParser} from '../helpers/headers'
 
 export function xhr(config: RequestConfig): BxiosPromise {
   return new Promise((resolve, reject) => {
-    const {data = null, url, method = 'get', headers, responseType, timeout} = config
+    const {data = null, url, method = 'get', headers, responseType, timeout, withCredentials} = config
 
     const request = new XMLHttpRequest()
     if (responseType) request.responseType = responseType
+    /*
+    * withCredentials
+    * Is a Boolean that indicates whether or not cross-site Access-Control requests should be made using credentials such as cookies or authorization headers
+    */
+    if (withCredentials) request.withCredentials = withCredentials
     request.onreadystatechange = function(): void {
       if (this.readyState === 4) {
         handleResponse()
       }
     }
+
+    // only network error
     request.onerror = reject
+    // timeout error
     request.ontimeout = reject
+    // about event
     request.onabort = reject
     request.open(method.toUpperCase(), url, true)
 
     if (timeout) request.timeout = timeout
 
+    // delete header content-type when data is empty
     Object.keys(headers).forEach(key => {
       if (isNull(data) && key.toLowerCase() === 'content-type') {
         delete headers[key]

@@ -12,10 +12,12 @@ function createInstance(config: RequestConfig): BxiosStatic {
   return instance as BxiosStatic
 }
 
-const bxios = createInstance(defaults)
+const bxios: BxiosStatic = createInstance(defaults)
 
 bxios.create = function(config: RequestConfig): BxiosStatic {
   return createInstance(mergeConfig(defaults, config))
 }
+
+bxios.Bxios = Bxios
 
 export default bxios

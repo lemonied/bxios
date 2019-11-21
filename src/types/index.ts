@@ -33,9 +33,12 @@ export interface RequestConfig {
   responseType?: ResponseType;
   timeout?: number;
   auth?: BasicCredentials;
+  withCredentials?: boolean;
   paramsSerializer?: (params: any) => any;
   transformRequest?: Transformer | Transformer[];
   transformResponse?: Transformer | Transformer[];
+  onUploadProgress?: (event: any) => void;
+  onDownloadProgress?: (event: any) => void;
 }
 
 export interface Transformer {

@@ -9,7 +9,7 @@
   "license": "MIT",
   "scripts": {
     "dev": "node build/development.js",
-    "tsc": "tsc"
+    "tsc": "tsc --module commonjs"
   },
   "dependencies": {},
   "devDependencies": {

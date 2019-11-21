@@ -1,0 +1,34 @@
+import {RequestConfig, Response} from '../types'
+
+export class BxiosError extends Error {
+
+  isBxiosError: boolean
+  config: RequestConfig
+  code?: string | null | number
+  request?: any
+  response?: Response
+
+  constructor(
+    message: string,
+    config: RequestConfig,
+    code: string | null | number,
+    request?: any,
+    response?: Response
+  ) {
+    super(message)
+    this.isBxiosError = true
+    this.config = config
+    this.code = code
+    this.request = request
+    this.response = response
+  }
+}
+
+export function createError(
+  message: string,
+  config: RequestConfig,
+  code: string | null | number,
+  request?: any, response?: Response
+): BxiosError {
+  return new BxiosError(message, config, code, request, response)
+}
