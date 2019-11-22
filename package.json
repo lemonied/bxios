@@ -9,8 +9,10 @@
   "license": "MIT",
   "scripts": {
     "dev": "node build/development.js",
+    "build": "npm run tsc && node build/prod.js",
     "tsc": "tsc",
-    "test": "npm run tsc && node index.js"
+    "test": "npm run tsc && node index.js",
+    "lint": "eslint --ext .js,.ts src"
   },
   "dependencies": {},
   "devDependencies": {

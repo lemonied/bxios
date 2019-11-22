@@ -11,7 +11,7 @@ module.exports = {
     path: resolve(__dirname, '../dist'),
     filename: '[name].js',
     libraryTarget: 'umd',
-    library: 'axios',
+    library: 'bxios',
     libraryExport: 'default'
   },
   module: {
