@@ -44,7 +44,7 @@ export function buildUrl(url: string, params?: any, paramsSerializer?: (params: 
 
 export function isWholeUrl(url: string): boolean {
   // return /^([a-z][a-z\d\+\-\.]*:)?\/\//i.test(url)
-  return /^http(s?):\/{2}/.test(url)
+  return /^http(s?):\/\//.test(url)
 }
 
 export function isAbsoluteUrl(url: string): boolean {
@@ -52,7 +52,7 @@ export function isAbsoluteUrl(url: string): boolean {
 }
 
 export function compineUrl(baseUrl: string, url: string): string {
-  if (isWholeUrl(url)) return url
+  if (isWholeUrl(url) || !baseUrl) return url
   return baseUrl.replace(/\/+$/, '') + '/' + url.replace(/^\/+/, '')
 }
 

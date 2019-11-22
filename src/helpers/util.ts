@@ -1,3 +1,5 @@
+import {urlParser, isWholeUrl} from '../helpers/url'
+
 const toString = Object.prototype.toString
 
 export function isDate(val: any): val is Date {
@@ -52,6 +54,13 @@ export function deepMerge(...args: any[]): any {
 
 export function isURLSearchParams(val: any): val is URLSearchParams {
   return typeof val !== 'undefined' && val instanceof URLSearchParams
+}
+
+export function isUrlSameOrigin(requestUrl: string): boolean {
+  if (!isWholeUrl(requestUrl)) return true
+  const parsedUrl = urlParser(requestUrl)
+  const current = urlParser(window.location.href)
+  return parsedUrl.origin === current.origin
 }
 
 export function extend<T, U>(to: T, from: U): T & U {

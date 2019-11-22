@@ -3,17 +3,22 @@ import {processHeaders} from './helpers/headers'
 import {transfromRequest, transformResponse} from './helpers/data'
 
 const defaults: RequestConfig = {
-  baseURL: '',
+  method: 'get',
   headers: {
     common: {
       Accept: 'application/json, text/plain, */*'
     }
   },
+  xsrfCookieName: 'XSRF-TOKEN',
+  xsrfHeaderName: 'X-XSRF-TOKEN',
   transformRequest: [(data, headers): any => {
     processHeaders(headers, data)
     return transfromRequest(data, headers)
   }],
-  transformResponse: [transformResponse]
+  transformResponse: [transformResponse],
+  validateStatus(status: number): boolean {
+    return status >= 200 && status < 300 || status === 304
+  }
 }
 
 export default defaults

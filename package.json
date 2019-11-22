@@ -9,15 +9,18 @@
   "license": "MIT",
   "scripts": {
     "dev": "node build/development.js",
-    "tsc": "tsc --module commonjs"
+    "tsc": "tsc",
+    "test": "npm run tsc && node index.js"
   },
   "dependencies": {},
   "devDependencies": {
     "@babel/core": "^7.7.2",
     "@babel/plugin-proposal-class-properties": "^7.7.0",
+    "@babel/plugin-transform-runtime": "^7.6.2",
     "@babel/preset-env": "^7.7.1",
     "@babel/preset-typescript": "^7.7.2",
     "@babel/register": "^7.7.0",
+    "@babel/runtime": "^7.7.2",
     "@types/node": "^12.12.8",
     "@typescript-eslint/eslint-plugin": "^2.7.0",
     "@typescript-eslint/parser": "^2.7.0",

@@ -1,45 +1,90 @@
 import {RequestConfig, BxiosPromise, Response} from '../types'
-import {isNull} from '../helpers/util'
+import {isNull, isUrlSameOrigin} from '../helpers/util'
 import {headersParser} from '../helpers/headers'
+import { cookie } from '../helpers/cookie'
+import {createError} from '../helpers/error'
 
 export function xhr(config: RequestConfig): BxiosPromise {
   return new Promise((resolve, reject) => {
-    const {data = null, url, method = 'get', headers, responseType, timeout, withCredentials} = config
+    const {
+      data = null,
+      url,
+      method = 'get',
+      headers,
+      responseType,
+      timeout,
+      withCredentials,
+      onDownloadProgress,
+      onUploadProgress
+    } = config
 
     const request = new XMLHttpRequest()
-    if (responseType) request.responseType = responseType
-    /*
-    * withCredentials
-    * Is a Boolean that indicates whether or not cross-site Access-Control requests should be made using credentials such as cookies or authorization headers
-    */
-    if (withCredentials) request.withCredentials = withCredentials
+    request.onprogress = onDownloadProgress
+    request.upload.onprogress = onUploadProgress
     request.onreadystatechange = function(): void {
-      if (this.readyState === 4) {
+      if (this.readyState === 4 && request.status !== 0) {
         handleResponse()
       }
     }
-
     // only network error
-    request.onerror = reject
+    request.onerror = function(): void {
+      reject(createError(`NetWork Error`, config, null, request))
+    }
     // timeout error
-    request.ontimeout = reject
-    // about event
-    request.onabort = reject
+    request.ontimeout = function(): void {
+      reject(createError(`Timeout of ${timeout}ms exceeded`, config, 'ECONNABORTED', request))
+    }
+
     request.open(method.toUpperCase(), url, true)
 
-    if (timeout) request.timeout = timeout
-
-    // delete header content-type when data is empty
-    Object.keys(headers).forEach(key => {
-      if (isNull(data) && key.toLowerCase() === 'content-type') {
-        delete headers[key]
-      } else {
-        request.setRequestHeader(key, headers[key])
-      }
-    })
+    configureRequest()
+    processHeaders()
+    processCancel()
     request.send(data)
 
+    function configureRequest(): void {
+      if (responseType) request.responseType = responseType
+      if (timeout) request.timeout = timeout
+      /*
+      * withCredentials
+      * Is a Boolean that indicates whether or not cross-site
+      * Access-Control requests should be made using credentials such as cookies or authorization headers
+      */
+      if (withCredentials) request.withCredentials = withCredentials
+    }
+
+    function processHeaders(): void {
+      /*
+      * Cross Site Request Forgerydetected Defense
+      * if request withCredentials=true or same origin policy
+      * headers[xsrfCookieName]=xsrfValue when name and value exist
+      */
+      const {xsrfCookieName, xsrfHeaderName} = config
+      if ((withCredentials || isUrlSameOrigin(url)) && xsrfCookieName) {
+        const xsrfValue = cookie.read(xsrfCookieName)
+        if (xsrfHeaderName && xsrfValue) {
+          headers[xsrfHeaderName] = xsrfValue
+        }
+      }
+
+      const {auth} = config
+      if (auth) {
+        // base64 encode
+        headers['Authorization'] = `Basic ${btoa(`${auth.username} : ${auth.password}`)}`
+      }
+
+      // delete header content-type when data is empty
+      Object.keys(headers).forEach(key => {
+        if (isNull(data) && key.toLowerCase() === 'content-type') {
+          delete headers[key]
+        } else {
+          request.setRequestHeader(key, headers[key])
+        }
+      })
+    }
+
     function handleResponse(): void {
+      const {validateStatus} = config
       const responseHeaders = request.getAllResponseHeaders()
       const responseData = request.responseType !== 'text' ?
         request.response :
@@ -52,7 +97,27 @@ export function xhr(config: RequestConfig): BxiosPromise {
         config,
         request
       }
-      resolve(response)
+      if (validateStatus(request.status)) {
+        resolve(response)
+      } else {
+        reject(createError(
+          `Request failed with status code ${request.status}`,
+          config,
+          request.status,
+          request,
+          response
+        ))
+      }
+    }
+
+    function processCancel(): void {
+      const {cancelToken} = config
+      if (cancelToken) {
+        cancelToken.promise.then((reason) => {
+          request.abort()
+          reject(reason)
+        })
+      }
     }
   })
 }

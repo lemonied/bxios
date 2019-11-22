@@ -3,6 +3,7 @@ import {Bxios} from './core/Bxios'
 import defaults from './defaults'
 import {extend} from './helpers/util'
 import {mergeConfig} from './core/mergeConfig'
+import {CancelToken} from './cancel/CancelToken'
 
 function createInstance(config: RequestConfig): BxiosStatic {
   const context = new Bxios(config)
@@ -19,5 +20,6 @@ bxios.create = function(config: RequestConfig): BxiosStatic {
 }
 
 bxios.Bxios = Bxios
+bxios.CancelToken = CancelToken
 
 export default bxios

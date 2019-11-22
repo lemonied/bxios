@@ -25,10 +25,13 @@ export class BxiosError extends Error {
 }
 
 export function createError(
-  message: string,
+  message: any,
   config: RequestConfig,
   code: string | null | number,
   request?: any, response?: Response
 ): BxiosError {
+  if (message instanceof Error) {
+    message = message.message
+  }
   return new BxiosError(message, config, code, request, response)
 }
