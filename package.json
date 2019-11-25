@@ -1,6 +1,6 @@
 {
   "name": "bxios",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A XMLHttpRequest Library Written By TypeScript",
   "main": "dist/bxios.umd.js",
   "typings": "src/types/index.ts",
