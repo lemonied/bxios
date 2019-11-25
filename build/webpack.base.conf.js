@@ -12,7 +12,8 @@ module.exports = {
     filename: '[name].js',
     libraryTarget: 'umd',
     library: 'bxios',
-    libraryExport: 'default'
+    libraryExport: 'default',
+    globalObject: 'this'
   },
   module: {
     rules: [
