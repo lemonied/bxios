@@ -2,17 +2,21 @@ import { urlParser, isWholeUrl } from './url'
 
 const toString = Object.prototype.toString
 
+interface Store {
+  [prop: string]: any;
+}
+
 export function isDate(val: any): val is Date {
   return toString.call(val) === '[object Date]'
 }
 
-export function isObject(val: any): val is Object {
+export function isObject(val: any): val is Store {
   return val !== null && typeof val === 'object'
 }
 
 // plainObject
 // for example {[prop: string]: any}
-export function isPlainObject(val: any): val is Object {
+export function isPlainObject(val: any): val is Store {
   return toString.call(val) === '[object Object]'
 }
 
@@ -66,7 +70,9 @@ export function isUrlSameOrigin(requestUrl: string): boolean {
 
 export function extend<T, U>(to: T, from: U): T & U {
   for (const key in from) {
-    ;(to as T & U)[key] = from[key] as any
+    if (from.hasOwnProperty(key)) {
+      (to as T & U)[key] = from[key] as any
+    }
   }
   return to as T & U
 }

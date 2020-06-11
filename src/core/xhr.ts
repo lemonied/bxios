@@ -27,11 +27,11 @@ export function xhr(config: RequestConfig): BxiosPromise {
       }
     }
     // only network error
-    request.onerror = function (): void {
+    request.onerror = (): void => {
       reject(createError(`NetWork Error`, config, null, request))
     }
     // timeout error
-    request.ontimeout = function (): void {
+    request.ontimeout = (): void => {
       reject(createError(`Timeout of ${timeout}ms exceeded`, config, 'ECONNABORTED', request))
     }
 
@@ -70,7 +70,7 @@ export function xhr(config: RequestConfig): BxiosPromise {
       const {auth} = config
       if (auth) {
         // base64 encode
-        headers['Authorization'] = `Basic ${btoa(`${auth.username} : ${auth.password}`)}`
+        headers.Authorization = `Basic ${btoa(`${auth.username} : ${auth.password}`)}`
       }
 
       // delete header content-type when data is empty

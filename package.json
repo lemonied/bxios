@@ -1,19 +1,22 @@
 {
   "name": "bxios",
-  "version": "1.0.3",
+  "version": "1.0.6",
   "description": "A XMLHttpRequest Library Written By TypeScript",
+  "typings": "dist/types/index.d.ts",
   "main": "dist/bxios.umd.js",
-  "typings": "src/types/index.ts",
-  "module": "lib/index.js",
+  "module": "dist/lib/index.js",
   "repository": "https://github.com/timoodada/bxios.git",
   "author": "chenjiyuan <jiyuan.chen@easystack.cn>",
   "license": "MIT",
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "dev": "node build/development.js",
     "build": "npm run tsc && node build/prod.js",
     "tsc": "tsc",
     "test": "npm run tsc && node index.js",
-    "lint": "eslint --ext .js,.ts src"
+    "lint": "tslint --project ./"
   },
   "dependencies": {},
   "devDependencies": {
@@ -28,11 +31,11 @@
     "@typescript-eslint/eslint-plugin": "^2.7.0",
     "@typescript-eslint/parser": "^2.7.0",
     "babel-loader": "^8.0.6",
-    "eslint": "^6.6.0",
-    "eslint-loader": "^3.0.2",
     "express": "^4.17.1",
     "express-http-proxy": "^1.6.0",
     "glob": "^7.1.6",
+    "tslint": "^6.1.2",
+    "tslint-loader": "^3.5.4",
     "typescript": "^3.7.2",
     "webpack": "^4.41.2",
     "webpack-merge": "^4.2.2"

@@ -15,7 +15,7 @@ function createInstance(config: RequestConfig): BxiosStatic {
 
 const bxios: BxiosStatic = createInstance(defaults)
 
-bxios.create = function (config: RequestConfig): BxiosStatic {
+bxios.create = (config: RequestConfig): BxiosStatic => {
   return createInstance(mergeConfig(defaults, config))
 }
 

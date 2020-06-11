@@ -41,16 +41,16 @@ export class Bxios {
 
     return new Promise((resolve, reject) => {
       let response: Response
-      const chain: MiddleWare<any> = async (config: RequestConfig, next) => {
-        response = await dispatchRequest(config)
+      const chain: MiddleWare<any> = async (conf: RequestConfig, next) => {
+        response = await dispatchRequest(conf)
         await next()
       }
 
       compose<RequestConfig>([...filterMiddles.request, chain])(config, (arg: any) => {
         if (!arg) {
-          return compose<Response>(filterMiddles.response)(response, (arg: any) => {
-            if (!arg) return resolve(response)
-            handleError(arg)
+          return compose<Response>(filterMiddles.response)(response, (arg2: any) => {
+            if (!arg2) return resolve(response)
+            handleError(arg2)
           }, config.cancelToken)
         }
         handleError(arg)

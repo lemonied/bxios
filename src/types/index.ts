@@ -45,9 +45,7 @@ export interface RequestConfig {
   cancelToken?: CancelToken;
 }
 
-export interface Transformer {
-  (data: any, headers?: any): any;
-}
+export type Transformer = (data: any, headers?: any) => any;
 
 export interface Response<T=any> {
   data: T;
@@ -58,26 +56,18 @@ export interface Response<T=any> {
   request: any;
 }
 
-export interface BxiosPromise<T=any> extends Promise<Response<T>> {
-  
-}
+export interface BxiosPromise<T=any> extends Promise<Response<T>> {}
 
 export interface BasicCredentials {
   username: string;
   password: string;
 }
 
-export interface ResolvedFn<T> {
-  (val: T): T | Promise<T>;
-}
+export type ResolvedFn<T> = (val: T) => T | Promise<T>;
 
-export interface RejectFn {
-  (error: any): any;
-}
+export type RejectFn = (error: any) => any;
 
-export interface MiddleWare<T> {
-  (ctx: T, next: () => Promise<any>): void;
-}
+export type MiddleWare<T> = (ctx: T, next: () => Promise<any>) => void;
 
 export interface MiddleWareManager<T> {
   middlewares: MiddleWare<T>[];
@@ -114,9 +104,7 @@ export interface BxiosInstance extends Bxios {
   <T=any>(url: string, config?: RequestConfig): BxiosPromise<T>;
 }
 
-export interface BxiosClassStatic {
-  new (config: RequestConfig): Bxios;
-}
+export type BxiosClassStatic = new (config: RequestConfig) => Bxios;
 
 export interface BxiosStatic extends BxiosInstance {
   create(config?: RequestConfig): BxiosInstance;
@@ -130,13 +118,9 @@ export interface CancelToken {
   throwIfRequested(): void;
 }
 
-export interface Canceler {
-  (message?: string): void;
-}
+export type Canceler = (message?: string) => void;
 
-export interface CancelExecutor {
-  (canceler: Canceler): void;
-}
+export type CancelExecutor = (canceler: Canceler) => void;
 
 export interface CancelTokenSource {
   cancel: Canceler;
@@ -152,6 +136,4 @@ export interface Cancel {
   message?: string;
 }
 
-export interface CancelStatic {
-  new (message?: string): Cancel;
-}
+export type CancelStatic = new (message?: string) => Cancel;

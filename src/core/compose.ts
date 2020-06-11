@@ -1,7 +1,7 @@
 import { MiddleWare, CancelToken } from '../types'
 
 export function compose<T>(middleWares: MiddleWare<T>[]): any {
-  return function (ctx: T, next?: (err?: any, ctx?: T) => void, cancelToken?: CancelToken): void {
+  return (ctx: T, next?: (err?: any, ctx?: T) => void, cancelToken?: CancelToken): void => {
     let index: number
     dispatch(0).catch((err: any) => {
       next(err)
@@ -15,7 +15,7 @@ export function compose<T>(middleWares: MiddleWare<T>[]): any {
       const fn = middleWares[i]
       if (index >= middleWares.length) return Promise.resolve(next(null, ctx))
       if (!fn) return Promise.resolve()
-      return Promise.resolve(fn(ctx, function () {
+      return Promise.resolve(fn(ctx, () => {
         return dispatch(index + 1)
       }))
     }
