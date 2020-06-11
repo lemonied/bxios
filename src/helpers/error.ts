@@ -1,4 +1,4 @@
-import {RequestConfig, Response} from '../types'
+import { RequestConfig, Response } from '../types'
 
 export class BxiosError extends Error {
 

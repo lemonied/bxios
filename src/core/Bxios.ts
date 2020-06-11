@@ -1,10 +1,10 @@
 import { RequestConfig, BxiosPromise, Response, MiddleWare } from '../types'
-import {mergeConfig} from '../core/mergeConfig'
+import { mergeConfig } from './mergeConfig'
 import { dispatchRequest } from './dispatchRequest'
 import { compose } from './compose'
-import {isCancel} from '../cancel/cancel'
-import {createError} from '../helpers/error'
-import {MiddleWareManager} from '../core/middlewareManager'
+import { isCancel } from '../cancel/cancel'
+import { createError } from '../helpers/error'
+import { MiddleWareManager } from './middlewareManager'
 
 export class Bxios {
 
@@ -52,7 +52,7 @@ export class Bxios {
             if (!arg) return resolve(response)
             handleError(arg)
           }, config.cancelToken)
-        } 
+        }
         handleError(arg)
       }, config.cancelToken)
 
@@ -67,7 +67,7 @@ export class Bxios {
           reject(createError(
             arg,
             config,
-            'MIDDLEWAREERROR'
+            'MIDDLEWARE_ERROR'
           ))
         }
       }

@@ -1,5 +1,5 @@
-import {queryParse, queryString} from './query'
-import {isURLSearchParams} from './util'
+import { queryParse, queryString } from './query'
+import { isURLSearchParams } from './util'
 
 interface Url {
   path: string;
@@ -29,7 +29,7 @@ function getOrigin(url: string): string {
 
 export function buildUrl(url: string, params?: any, paramsSerializer?: (params: any) => string): string {
   const parsedUrl = urlParser(url)
-  const { query: search, path } = parsedUrl
+  const {query: search, path} = parsedUrl
   let stringedQuery: string
   if (isURLSearchParams(params)) {
     stringedQuery = params.toString()

@@ -1,6 +1,5 @@
-
-import {CancelExecutor, CancelTokenSource, Canceler} from '../types'
-import {Cancel} from './cancel'
+import { CancelExecutor, CancelTokenSource, Canceler } from '../types'
+import { Cancel } from './cancel'
 
 interface ResolvedPromise {
   (reason?: Cancel): void;
@@ -30,7 +29,7 @@ export class CancelToken {
 
   static source(): CancelTokenSource {
     let cancel: Canceler
-    const token = new CancelToken(function(c) {
+    const token = new CancelToken(function (c) {
       cancel = c
     })
     return {

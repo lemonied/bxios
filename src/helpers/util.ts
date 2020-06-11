@@ -1,4 +1,4 @@
-import {urlParser, isWholeUrl} from '../helpers/url'
+import { urlParser, isWholeUrl } from './url'
 
 const toString = Object.prototype.toString
 
@@ -17,6 +17,7 @@ export function isPlainObject(val: any): val is Object {
 }
 
 type twoArr = [any, any]
+
 export function obj2Array(val: any): twoArr[] {
   const arr: twoArr[] = []
   if (isPlainObject(val)) {

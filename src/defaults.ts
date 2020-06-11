@@ -1,6 +1,6 @@
-import {RequestConfig} from './types'
-import {processHeaders} from './helpers/headers'
-import {transfromRequest, transformResponse} from './helpers/data'
+import { RequestConfig } from './types'
+import { processHeaders } from './helpers/headers'
+import { transfromRequest, transformResponse } from './helpers/data'
 
 const defaults: RequestConfig = {
   method: 'get',

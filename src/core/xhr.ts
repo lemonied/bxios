@@ -1,8 +1,8 @@
-import {RequestConfig, BxiosPromise, Response} from '../types'
-import {isNull, isUrlSameOrigin} from '../helpers/util'
-import {headersParser} from '../helpers/headers'
+import { RequestConfig, BxiosPromise, Response } from '../types'
+import { isNull, isUrlSameOrigin } from '../helpers/util'
+import { headersParser } from '../helpers/headers'
 import { cookie } from '../helpers/cookie'
-import {createError} from '../helpers/error'
+import { createError } from '../helpers/error'
 
 export function xhr(config: RequestConfig): BxiosPromise {
   return new Promise((resolve, reject) => {
@@ -21,17 +21,17 @@ export function xhr(config: RequestConfig): BxiosPromise {
     const request = new XMLHttpRequest()
     request.onprogress = onDownloadProgress
     request.upload.onprogress = onUploadProgress
-    request.onreadystatechange = function(): void {
+    request.onreadystatechange = function (): void {
       if (this.readyState === 4 && request.status !== 0) {
         handleResponse()
       }
     }
     // only network error
-    request.onerror = function(): void {
+    request.onerror = function (): void {
       reject(createError(`NetWork Error`, config, null, request))
     }
     // timeout error
-    request.ontimeout = function(): void {
+    request.ontimeout = function (): void {
       reject(createError(`Timeout of ${timeout}ms exceeded`, config, 'ECONNABORTED', request))
     }
 

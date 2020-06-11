@@ -1,8 +1,8 @@
-import {RequestConfig, BxiosPromise, Response} from '../types'
-import {xhr} from './xhr'
-import {transform} from './transform'
-import {compineUrl, buildUrl} from '../helpers/url'
-import {transformHeaders} from '../helpers/headers'
+import { RequestConfig, BxiosPromise, Response } from '../types'
+import { xhr } from './xhr'
+import { transform } from './transform'
+import { compineUrl, buildUrl } from '../helpers/url'
+import { transformHeaders } from '../helpers/headers'
 
 export function dispatchRequest(config: RequestConfig): BxiosPromise {
   processConfig(config)
