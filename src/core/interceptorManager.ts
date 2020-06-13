@@ -1,12 +1,12 @@
-import {ResolvedFn, RejectFn} from '../types'
+import { ResolvedFn, RejectFn, RequestConfig, Response } from '../types'
 
 interface Interceptor<T> {
   resolved: ResolvedFn<T>;
   rejected: RejectFn;
 }
 
-export class InterceptorManager<T> {
-  private interceptors: (Interceptor<T> | null)[]
+export class InterceptorManager<T = RequestConfig | Response> {
+  private readonly interceptors: (Interceptor<T> | null)[]
 
   constructor() {
     this.interceptors = []

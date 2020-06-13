@@ -1,4 +1,5 @@
-import {isDate, isPlainObject, isNull} from './util'
+import { isDate, isPlainObject, isNull } from './util'
+
 function encode(val: string): string {
   return encodeURIComponent(val)
     .replace(/%40/g, '@')
@@ -9,12 +10,13 @@ function encode(val: string): string {
     .replace(/%5B/gi, '[')
     .replace(/%5D/gi, ']')
 }
+
 /*
   * format array item
   * for example:
   * tranforms {arr: [1, {b: 1, c: [2, 3]}]} to arr[]=1&arr[1][b]=1&c[]=2&c[1]=3
   */
- function arrayParser(arr: any[], prefix: string): string {
+function arrayParser(arr: any[], prefix: string): string {
   return arr.map((item, key) => {
     const preKey = key === 0 ? '' : key
     if (isNull(item)) return `${prefix}[${preKey}]=`
@@ -44,8 +46,8 @@ export function queryString(val: any, prefix?: string): string {
         value = JSON.stringify(value)
       }
       const ret = prefix ?
-      `${prefix}[${key}]=${encode(value)}` :
-      `${key}=${encode(value)}`
+        `${prefix}[${key}]=${encode(value)}` :
+        `${key}=${encode(value)}`
       serializedParams.push(ret)
     })
     return serializedParams.join('&')
@@ -55,7 +57,7 @@ export function queryString(val: any, prefix?: string): string {
 }
 
 export function queryParse(val: any): object {
-  type constantObj = {[prop: string]: string}
+  type constantObj = { [prop: string]: string }
   if (typeof val === 'string') {
     if (val.indexOf('?') === 0) val = val.substr(1)
     const query: constantObj = {}

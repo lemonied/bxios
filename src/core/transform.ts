@@ -1,4 +1,4 @@
-import {Transformer} from '../types'
+import { Transformer } from '../types'
 
 export function transform(data: any, headers: any, fns?: Transformer | Transformer[]): any {
   if (!fns) return data

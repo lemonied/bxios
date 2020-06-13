@@ -1,5 +1,5 @@
-import {isPlainObject, deepMerge} from './util'
-import {Headers} from '../types'
+import { isPlainObject, deepMerge } from './util'
+import { Headers } from '../types'
 
 function normalizeHeaderName(headers: Headers, normalizedName: string): void {
   if (!headers) return

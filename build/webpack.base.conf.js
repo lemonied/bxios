@@ -11,8 +11,9 @@ module.exports = {
     path: resolve(__dirname, '../dist'),
     filename: '[name].js',
     libraryTarget: 'umd',
-    library: 'axios',
-    libraryExport: 'default'
+    library: 'bxios',
+    libraryExport: 'default',
+    globalObject: 'this'
   },
   module: {
     rules: [
@@ -27,9 +28,15 @@ module.exports = {
         enforce: 'pre',
         test: /\.(js|tsx?)$/,
         exclude: /node_modules/,
-        use: {
-          loader: 'eslint-loader'
-        }
+        use: [{
+          loader: 'tslint-loader',
+          options: {
+            configFile: resolve(__dirname, '../tslint.json'),
+            tsConfigFile: resolve(__dirname, '../tsconfig.json'),
+            emitErrors: true,
+            failOnHint: true
+          }
+        }]
       }
     ]
   }

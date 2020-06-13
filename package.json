@@ -1,32 +1,41 @@
 {
   "name": "bxios",
-  "version": "1.0.0",
+  "version": "1.0.6",
   "description": "A XMLHttpRequest Library Written By TypeScript",
+  "typings": "dist/types/index.d.ts",
   "main": "dist/bxios.umd.js",
-  "typings": "lib/types/index.ts",
+  "module": "dist/lib/index.js",
   "repository": "https://github.com/timoodada/bxios.git",
   "author": "chenjiyuan <jiyuan.chen@easystack.cn>",
   "license": "MIT",
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "dev": "node build/development.js",
-    "tsc": "tsc"
+    "build": "npm run tsc && node build/prod.js",
+    "tsc": "tsc",
+    "test": "npm run tsc && node index.js",
+    "lint": "tslint --project ./"
   },
   "dependencies": {},
   "devDependencies": {
     "@babel/core": "^7.7.2",
     "@babel/plugin-proposal-class-properties": "^7.7.0",
+    "@babel/plugin-transform-runtime": "^7.6.2",
     "@babel/preset-env": "^7.7.1",
     "@babel/preset-typescript": "^7.7.2",
     "@babel/register": "^7.7.0",
+    "@babel/runtime": "^7.7.2",
     "@types/node": "^12.12.8",
     "@typescript-eslint/eslint-plugin": "^2.7.0",
     "@typescript-eslint/parser": "^2.7.0",
     "babel-loader": "^8.0.6",
-    "eslint": "^6.6.0",
-    "eslint-loader": "^3.0.2",
     "express": "^4.17.1",
     "express-http-proxy": "^1.6.0",
     "glob": "^7.1.6",
+    "tslint": "^6.1.2",
+    "tslint-loader": "^3.5.4",
     "typescript": "^3.7.2",
     "webpack": "^4.41.2",
     "webpack-merge": "^4.2.2"

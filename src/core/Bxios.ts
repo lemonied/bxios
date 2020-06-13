@@ -1,18 +1,24 @@
-import { RequestConfig, BxiosPromise, Response, Interceptors, PromiseChain } from '../types'
-import {InterceptorManager} from '../core/interceptorManager'
-import {mergeConfig} from '../core/mergeConfig'
+import { RequestConfig, BxiosPromise, Response, MiddleWare } from '../types'
+import { mergeConfig } from './mergeConfig'
 import { dispatchRequest } from './dispatchRequest'
+import { compose } from './compose'
+import { isCancel } from '../cancel/cancel'
+import { createError } from '../helpers/error'
+import { MiddleWareManager } from './middlewareManager'
 
 export class Bxios {
 
   defaults: RequestConfig
-  interceptors: Interceptors
+  middlewares: {
+    request: MiddleWareManager<RequestConfig>;
+    response: MiddleWareManager<Response>;
+  }
 
   constructor(initConfig: RequestConfig) {
     this.defaults = initConfig
-    this.interceptors = {
-      request: new InterceptorManager<RequestConfig>(),
-      response: new InterceptorManager<Response>()
+    this.middlewares = {
+      request: new MiddleWareManager<RequestConfig>(),
+      response: new MiddleWareManager<Response>()
     }
   }
 
@@ -27,23 +33,44 @@ export class Bxios {
     }
     // defaults will merge with config
     config = mergeConfig(this.defaults, config)
-    const chain: PromiseChain<any>[] = [{
-      resolved: dispatchRequest
-    }]
 
-    this.interceptors.request.forEach(interceptor => {
-      chain.unshift(interceptor)
-    })
-    this.interceptors.response.forEach(iterceptor => {
-      chain.push(iterceptor)
-    })
-
-    let promise = Promise.resolve(config)
-    while (chain.length > 0) {
-      const { resolved, rejected } = chain.shift()!
-      promise = promise.then(resolved, rejected)
+    const filterMiddles = {
+      request: this.middlewares.request.middlewares.filter(item => !!item),
+      response: this.middlewares.response.middlewares.filter(item => !!item)
     }
 
-    return promise
+    return new Promise((resolve, reject) => {
+      let response: Response
+      const chain: MiddleWare<any> = async (conf: RequestConfig, next) => {
+        response = await dispatchRequest(conf)
+        await next()
+      }
+
+      compose<RequestConfig>([...filterMiddles.request, chain])(config, (arg: any) => {
+        if (!arg) {
+          return compose<Response>(filterMiddles.response)(response, (arg2: any) => {
+            if (!arg2) return resolve(response)
+            handleError(arg2)
+          }, config.cancelToken)
+        }
+        handleError(arg)
+      }, config.cancelToken)
+
+      function handleError(arg: any): void {
+        if (isCancel(arg)) {
+          reject(createError(
+            arg.message,
+            config,
+            'ABORTED'
+          ))
+        } else {
+          reject(createError(
+            arg,
+            config,
+            'MIDDLEWARE_ERROR'
+          ))
+        }
+      }
+    })
   }
 }
