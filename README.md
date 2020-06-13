@@ -5,3 +5,11 @@
 ``` bash
 借鉴koa2的中间件，使用compose重写axios的拦截器
 ```
+#### 安装
+```bash
+npm i bxios
+```
+or
+```bash
+yarn add bxios
+```

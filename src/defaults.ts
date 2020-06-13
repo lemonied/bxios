@@ -1,6 +1,6 @@
 import { RequestConfig } from './types'
 import { processHeaders } from './helpers/headers'
-import { transfromRequest, transformResponse } from './helpers/data'
+import { transformRequest, transformResponse } from './helpers/data'
 
 const defaults: RequestConfig = {
   method: 'get',
@@ -13,7 +13,7 @@ const defaults: RequestConfig = {
   xsrfHeaderName: 'X-XSRF-TOKEN',
   transformRequest: [(data, headers): any => {
     processHeaders(headers, data)
-    return transfromRequest(data, headers)
+    return transformRequest(data, headers)
   }],
   transformResponse: [transformResponse],
   validateStatus(status: number): boolean {

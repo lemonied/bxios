@@ -67,7 +67,7 @@ export type ResolvedFn<T> = (val: T) => T | Promise<T>;
 
 export type RejectFn = (error: any) => any;
 
-export type MiddleWare<T> = (ctx: T, next: () => Promise<any>) => void;
+export type MiddleWare<T> = (ctx: T, next: () => Promise<any>) => Promise<any>;
 
 export interface MiddleWareManager<T> {
   middlewares: MiddleWare<T>[];

@@ -3,7 +3,7 @@ import { Headers } from '../types'
 import { queryString } from './query'
 
 // browser request body types: Blob, BufferSource, FormData, URLSearchParams, ReadableStream、USVString
-export function transfromRequest(data: any, headers: Headers): any {
+export function transformRequest(data: any, headers: Headers): any {
   if (isPlainObject(data)) {
     const contentType = headers['Content-Type']
     if (/application\/x-www-form-urlencoded/i.test(contentType)) {

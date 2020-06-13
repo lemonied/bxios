@@ -49,6 +49,8 @@ export function deepMerge(...args: any[]): any {
           } else {
             ret[key] = deepMerge(val)
           }
+        } else {
+          ret[key] = val;
         }
         ret[key] = val
       })

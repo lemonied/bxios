@@ -1,5 +1,5 @@
-import {compose} from '../lib/core/compose'
-import {CancelToken} from '../lib/cancel/CancelToken'
+import {compose} from '../dist/lib/core/compose'
+import {CancelToken} from '../dist/lib'
 
 const token = CancelToken.source()
 
