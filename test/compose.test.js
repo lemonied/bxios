@@ -16,9 +16,16 @@ compose([
     // await sleep()
     await next()
     console.log(`第二个 结束`)
+  },
+  async function(ctx, next) {
+    ctx.c = 4
+    console.log(`第三个 开始`)
+    // await sleep()
+    await next()
+    console.log(`第三个 结束`)
   }
-])({}, ctx => {
-  console.log(ctx)
+])({}, (err, ctx) => {
+  console.log(err, ctx)
 })
 // setTimeout(function() {
 //   token.cancel('手动取消')

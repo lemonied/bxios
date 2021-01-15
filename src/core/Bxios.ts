@@ -46,14 +46,14 @@ export class Bxios {
         await next()
       }
 
-      compose<RequestConfig>([...filterMiddles.request, chain])(config, (arg: any) => {
-        if (!arg) {
-          return compose<Response>(filterMiddles.response)(response, (arg2: any) => {
-            if (!arg2) return resolve(response)
-            handleError(arg2)
-          }, config.cancelToken)
+      compose<RequestConfig>([...filterMiddles.request, chain])(config, (err: any) => {
+        if (err) {
+          return handleError(err)
         }
-        handleError(arg)
+        compose<Response>(filterMiddles.response)(response, (resErr: any) => {
+          if (!resErr) return resolve(response)
+          handleError(resErr)
+        }, config.cancelToken)
       }, config.cancelToken)
 
       function handleError(arg: any): void {
